@@ -9,6 +9,8 @@ export default class App extends Component {
 
     this.state = {
       candidates: [],
+      previousVotes: [],
+      previousPercentages: []
     }
     this.interval = null
   }
@@ -20,24 +22,35 @@ export default class App extends Component {
           return res.json()
         })
         .then((json) => {
+          const previousVotes = this.state.candidates.map(({ id, votes }) => {
+            return { id, votes }
+          })
+          const previousPercentages = this.state.candidates.map(({ id, percentage }) => {
+            return { id, percentage }
+          })
           this.setState({
             candidates: json.candidates,
+            previousVotes,
+            previousPercentages
           })
         })
     }, 1000)
   }
 
   render() {
-    const { candidates } = this.state
+    const { candidates, previousVotes, previousPercentages } = this.state
     if (candidates.length === 0) {
       return (
-        <Spinner description="Carregando..."/>
+        <Spinner description="Carregando..." />
       )
     }
     return (
       <div className='container'>
-        <Header title="Votação"/>
-        <Candidates candidates={candidates}/>
+        <Header title="Votação" />
+        <Candidates previousPercentages={previousPercentages}
+        previousVotes={previousVotes}
+        candidates={candidates}
+        />
       </div>
     )
 
