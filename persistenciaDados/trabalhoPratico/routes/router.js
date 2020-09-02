@@ -5,14 +5,26 @@ const router = express()
 
 router.post('/', accountsController.create)
 
-router.get('/', accountsController.findAll)
+router.get('/findAll', accountsController.findAll)
 
-router.get('/:id', accountsController.findOne)
+router.get('/findAgenciaConta', accountsController.findOne)
 
-router.put('/:id', accountsController.update)
+router.get('/findMedia', accountsController.findMedia)
 
-router.patch('/:id', accountsController.update)
+router.get('/findMenorSaldo', accountsController.findMenorSaldo)
 
-router.delete('/:id', accountsController.remove)
+router.get('/findMaiorSaldo', accountsController.findMaiorSaldo)
+
+router.get('/accountsPrivate', accountsController.ttAgenciaNineNine)
+
+router.put('/deposito', accountsController.update)
+
+router.put('/saque', accountsController.updateSaque)
+
+router.put('/transferencia', accountsController.updateTT)
+
+// router.patch('/:id', accountsController.update)
+
+router.delete('/deleteConta', accountsController.remove)
 
 export default router
