@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,30 +10,56 @@
    <link rel="stylesheet" href="./css/style.css">
    <title>Desafio</title>
 </head>
+
 <body>
-   <div class="main">
+   <div class="container">
 
-      <h1 class="center">Pesquisa de Usuários</h1>
+      <h1 class="title">Pesquisa de Usuários</h1>
 
-      <div>
-         <input type="text" placeholder="Buscar" id="inputFilter"/>
-         <button class="btn" id="buttonFilter">Filtrar</button>
+      <div id="divSpinner" class="flex-row flex-center">
+         <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue-only">
+               <div class="circle-clipper left">
+                  <div class="circle"></div>
+               </div>
+               <div class="gap-patch">
+                  <div class="circle"></div>
+               </div>
+               <div class="circle-clipper right">
+                  <div class="circle"></div>
+               </div>
+            </div>
+         </div>
+         <span style="margin-left:10px; font-size:1.5rem">Aguarde...</span>
       </div>
 
-      <h3 id="filter"></h3>
+      <div id="divInteraction" class="hidden">
+         <div class="flex-row">
+            <div class="input-field input">
+               <input id="inputFilter" type="text" class="validate" />
+               <label for="inputFilter">Pesquisa</label>
+            </div>
+            <button id="buttonFilter" class="waves-effect waves-light btn">Buscar</button>
+         </div>
 
-      <div class="users" id="users">
-      <span>Nenhum usuário filtrado</span>
-      </div>
+         <div class="flex-row flex-align-top">
 
-      
-      <h3 id="title"></h3>
-      <div class="statistic" id="statistic">
-         <span id="statistic">Nada a ser exibido</span>
+            <h3 id="filter"></h3>
+            <div class="users" id="users">
+               <h2>Nenhum usuário filtrado</h2>
+            </div>
+
+            <h3 id="title"></h3>
+            <div class="statistic" id="statistic">
+               <h2 id="statistic">Nada a ser exibido</h2>
+            </div>
+
+         </div>
       </div>
 
    </div>
-   
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
    <script src="./js/script.js"></script>
 </body>
+
 </html>

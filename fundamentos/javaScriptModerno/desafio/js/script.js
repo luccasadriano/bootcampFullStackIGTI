@@ -1,4 +1,3 @@
-
 let globalUser = []
 let globalUserFilter = []
 let userStatisticAge = []
@@ -9,7 +8,8 @@ let userStatisticAgeMedia = []
 let users = null
 let statistic = null
 let filter = null
-
+let divSpinner = null
+let divInteraction = null
 
 window.addEventListener('load', () => {
 
@@ -17,19 +17,20 @@ window.addEventListener('load', () => {
    statistic = document.querySelector('.statistic')
    filter = document.querySelector('#filter')
 
-//   await 
-   doFetch()
+   divInteraction = document.querySelector('#divInteraction')
+   divSpinner = document.querySelector('#divSpinner')
 
+
+   doFetch()
 })
 
-async function doFetch(){
+async function doFetch() {
    const response = await fetch('https://randomuser.me/api/?seed=javascript&results=100&nat=BR&noinfo')
    const data = await response.json()
-   
-   // console.log(data)
 
    allUsers = data.results.map(user => {
-     const {login, name, surname, dob, picture, gender} = user
+      const { login, name, surname, dob, picture, gender } = user
+      // const fullName = `${name.first} ${name.last}`
       return {
          login: login.uuid,
          name: name.first,
@@ -39,32 +40,41 @@ async function doFetch(){
          gender: gender
       }
    })
-   
+   .sort((a, b) => {
+      return a.name.localeCompare(b.name)
+   })//ordenar pelo nome
+
    globalUser = allUsers
 
-   // console.log(allUsers)
+   showInteraction()
+
    render()
 }
 
-function render(){
-   
-   filterUser()
-   // showStatistic()
-   // renderUser()
+function showInteraction(){//colocar o load e retira passando aquela sensação
+   setTimeout(()=>{
+      divSpinner.classList.add('hidden')
+      divInteraction.classList.remove('hidden')
+   }, 2000)
 }
 
-function renderUser(){
+function render() {
+
+   filterUser()
+}
+
+function renderUser() {
 
    filter.textContent = `${globalUserFilter.length} usuário(s) encontrado(s)`
 
    let usersHTML = '<div>'
 
    globalUserFilter.forEach(user => {
-      const {name, surname, age, picture, gender} = user
+      const { name, surname, age, picture, gender } = user
 
       const userHTML = `
       <div class="userss">
-      <img src="${picture}" alt="${name}">
+      <img class='avatar' src="${picture}" alt="${name}">
       </div>
       <div>
       <p>${name} ${surname}, ${age}</p>
@@ -78,24 +88,24 @@ function renderUser(){
    users.innerHTML = usersHTML
 }
 
-function filterUser(){
-   
+function filterUser() {
+
    const inputFilter = document.querySelector('#inputFilter')
    inputFilter.addEventListener('keyup', handleFilterKeyup)
 
    const buttonFilter = document.querySelector('#buttonFilter')
-   buttonFilter.addEventListener('click' , handleFilterClick)
-   
-   function handleFilterKeyup(event){
-      const {key} = event
-      if(key !== 'Enter'){
+   buttonFilter.addEventListener('click', handleFilterClick)
+
+   function handleFilterKeyup(event) {
+      const { key } = event
+      if (key !== 'Enter') {
          return
       }
       handleFilterClick()
    }
 
-   function handleFilterClick(){
-      
+   function handleFilterClick() {
+
       const filterValue = inputFilter.value.trim().toLowerCase()
 
       globalUserFilter = allUsers.filter((item) => {
@@ -105,46 +115,45 @@ function filterUser(){
       console.log(globalUserFilter)
       renderUser()
       showStatistic()
-      // renderStatistic()
    }
    inputFilter.focus()
 }
 
-   function showStatistic(){
+function showStatistic() {
 
-      title = document.querySelector('#title')
-      title.textContent = 'Estatísticas'
-      
-      userStatisticFemale = globalUserFilter.filter(e => e.gender === 'female').length
+   title = document.querySelector('#title')
+   title.textContent = 'Estatísticas'
 
-      userStatisticMale = globalUserFilter.filter(e => e.gender === 'male').length
-      
-      userStatisticAge = globalUserFilter.reduce((accumulator, current) => {
-         return accumulator + current.age
-      }, 0)
+   userStatisticFemale = globalUserFilter.filter(e => e.gender === 'female').length
 
-      userStatisticAgeMedia = (userStatisticAge / globalUserFilter.length).toFixed(2)
+   userStatisticMale = globalUserFilter.filter(e => e.gender === 'male').length
 
-      const statistic = document.querySelector('#statistic')
+   userStatisticAge = globalUserFilter.reduce((accumulator, current) => {
+      return accumulator + current.age
+   }, 0)
 
-      statistic.innerHTML = ''
-      var ul = document.createElement('ul')
-      var liF = document.createElement('li')
-      var liM = document.createElement('li')
-      var liA = document.createElement('li')
-      var liAm = document.createElement('li')
-      ul.appendChild(liF)
-      ul.appendChild(liM)
-      ul.appendChild(liA)
-      ul.appendChild(liAm)
+   userStatisticAgeMedia = (userStatisticAge / globalUserFilter.length).toFixed(2)
 
-      statistic.appendChild(ul)
+   const statistic = document.querySelector('#statistic')
 
-      liF.textContent = `Sexo masculino: ${userStatisticMale}`
-      liM.textContent = `Sexo feminino: ${ userStatisticFemale}`
-      liA.textContent = `Soma das idades: ${userStatisticAge}`
-      liAm.textContent = `Média das idades: ${userStatisticAgeMedia}`
+   statistic.innerHTML = ''
+   var ul = document.createElement('ul')
+   var liF = document.createElement('li')
+   var liM = document.createElement('li')
+   var liA = document.createElement('li')
+   var liAm = document.createElement('li')
+   ul.appendChild(liF)
+   ul.appendChild(liM)
+   ul.appendChild(liA)
+   ul.appendChild(liAm)
+
+   statistic.appendChild(ul)
+
+   liF.textContent = `Sexo masculino: ${userStatisticMale}`
+   liM.textContent = `Sexo feminino: ${userStatisticFemale}`
+   liA.textContent = `Soma das idades: ${userStatisticAge}`
+   liAm.textContent = `Média das idades: ${userStatisticAgeMedia}`
 
 
-      console.log(userStatisticFemale,userStatisticMale,userStatisticAge, userStatisticAgeMedia)
+   console.log(userStatisticFemale, userStatisticMale, userStatisticAge, userStatisticAgeMedia)
 }
