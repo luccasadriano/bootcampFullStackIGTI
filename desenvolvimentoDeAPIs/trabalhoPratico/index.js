@@ -1,36 +1,36 @@
 const fs  = require('fs')
 // const fs  = require('fs').promises
 
-// async function createJson(){
-//    try {
-//       const dataCidade = JSON.parse(await fs.readFile("Cidades.json"))
-//       const dataEstado = JSON.parse(await fs.readFile("Estados.json"))
+async function createJson(){
+   try {
+      const dataCidade = JSON.parse(await fs.readFile("Cidades.json"))
+      const dataEstado = JSON.parse(await fs.readFile("Estados.json"))
 
-//       await dataEstado.forEach((estado) => {
-//          const tste = dataCidade.filter((cidade) => {
-//           return estado.ID === cidade.Estado
-//          })
-//          fs.writeFile(`${estado.Sigla}.json`, JSON.stringify(tste, null, 2))
-//          console.log(tste)
-//       })
+      await dataEstado.forEach((estado) => {
+         const tste = dataCidade.filter((cidade) => {
+          return estado.ID === cidade.Estado
+         })
+         fs.writeFile(`${estado.Sigla}.json`, JSON.stringify(tste, null, 2))
+         console.log(tste)
+      })
       
-//    } catch (err) {
-//       console.log(err)
-//    }
-// }
+   } catch (err) {
+      console.log(err)
+   }
+}
 
-// async function filterQdtCity(uf){
+async function filterQdtCity(uf){
 
-//    try{
+   try{
 
-//       const countUf = JSON.parse(await fs.readFile(`${uf}.json`)).length
-//       // const test = countUf.length
-//       console.log(`${uf} - ${countUf}`)
+      const countUf = JSON.parse(await fs.readFile(`${uf}.json`)).length
+      // const test = countUf.length
+      console.log(`${uf} - ${countUf}`)
 
-//    }catch(err){
-//       console.log(err)
-//    }
-// }
+   }catch(err){
+      console.log(err)
+   }
+}
 
 // async function read(){
 //    const dataCidade = await fs.readFile("Cidades.json")
@@ -108,21 +108,21 @@ function BiggerNameCityAllStates(dataEstado, dataCidade, sort){
    const dataCidade = JSON.parse(fs.readFileSync("Cidades.json", "UTF-8"))
    
    //criar os 27 json's com as cidades
-   // createJson()
+   createJson()
 
    //Mostrar a quantidade de cidades de passando o estado
-   // filterQdtCity('AC')
+   filterQdtCity('AC')
 
    //Mostrar 5 estados que possuim mais cidades
    console.log(StateWith5BiggerCity(dataEstado, descInForNumbers))
    console.log(StateWith5BiggerCity(dataEstado, ascInForNumbers).reverse())
 
    //filtar as cidades com maior nome de cada estado
-   // console.log(BiggerNameCity(dataEstado, ascInForLenght))
-   // console.log(BiggerNameCity(dataEstado, descInForLength))
+   console.log(BiggerNameCity(dataEstado, ascInForLenght))
+   console.log(BiggerNameCity(dataEstado, descInForLength))
 
    //filtar as cidades de marior nome entre todos os estados
-   // console.log(BiggerNameCityAllStates(dataEstado, dataCidade, ascInForLenght))
-   // console.log(BiggerNameCityAllStates(dataEstado, dataCidade, descInForLength))
+   console.log(BiggerNameCityAllStates(dataEstado, dataCidade, ascInForLenght))
+   console.log(BiggerNameCityAllStates(dataEstado, dataCidade, descInForLength))
 
 })()
